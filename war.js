@@ -139,23 +139,19 @@ class Hand {
 
 
 // Game play:
-console.log("The Game Of WAR!")
-let playerOne = new Player('Player One')
-let playerTwo = new Player('Player Two')
-let deck = new Deck(cardList)
+console.log("The Game Of WAR!");
+let playerOne = new Player('Player One');
+let playerTwo = new Player('Player Two');
+let deck = new Deck(cardList);
 
-deck.deal([playerOne, playerTwo])
+deck.deal([playerOne, playerTwo]);
 
 while(playerOne.pile.length && playerTwo.pile.length) {
   if(playerOne.pile.length === 0) {
-    console.log(`${playerTwo.name} WINS THE GAME!`)
+    console.log(`${playerTwo.name} WINS THE GAME!`);
   } else if(playerTwo.pile.length === 0) {
-    console.log(`${playerOne.name} WINS THE GAME!`)
+    console.log(`${playerOne.name} WINS THE GAME!`);
   } else {
     let hand = new Hand();
   };
 };
-
-//   - Loop through game:
-//     - verify both Players have Cards
-//     - start a Hand ???
