@@ -8,6 +8,12 @@
   - Has Points - Integer
   - Has Facedown - Boolean ???
 
+#### Deck
+  - Has cards - Array of Cards
+  - Has shuffledCards - Array of Cards after shuffling
+  - Can shuffle cards
+  - Can deal Cards
+
 #### Player
   - Has a Name - String  
   - Has a Pile - Array of Cards
@@ -18,13 +24,15 @@
   - Has PlayerOneCards - Array of Cards
   - Has PlayerTwoCards - Array of Cards
   - Can verify points of Cards
-  - Can accept facedown Cards, then accept cards and verify points again upon a tie
+  - Can play hand - verify points of Cards
+  - Can play tie - accept facedown Cards, then accept cards and verify points again upon a tie
   - Can give cards to player when trick is won
 
-#### Game
-  - Can create players
-  - Can create Cards
-  - Can shuffle Cards
-  - Can deal Cards
-  - Can verify both Players have Cards ???
-  - Can start Hands ???
+#### Game play
+  - Create players
+  - Create Deck (which creates Cards)
+  - Shuffle Deck
+  - Deal Deck
+  - Loop through game:
+    - verify both Players have Cards
+    - start a Hand ???
