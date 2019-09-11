@@ -72,7 +72,6 @@ class Deck {
 
 class Hand {
   constructor() {
-    console.log(playerOne)
     this.playerOneCards = [playerOne.layCard()];
     this.playerTwoCards = [playerTwo.layCard()];
 
@@ -83,15 +82,22 @@ class Hand {
   listCards() {
     console.log(`${playerOne.name} lays the ${this.playerOneCards[0].name} of ${this.playerOneCards[0].suit}.`);
     console.log(`${playerTwo.name} lays the ${this.playerTwoCards[0].name} of ${this.playerTwoCards[0].suit}.`);
+    console.log(`**********`)
+  };
+
+  trickWinner(player) {
+    player.winTrick([...this.playerOneCards, ...this.playerTwoCards])
+    console.log(`${player.name} wins the trick and adds ${this.playerOneCards.length * 2} cards to their pile of cards.`);
+    console.log(`${playerOne.name} has ${playerOne.pile.length} cards in their pile while ${playerTwo.name} has ${playerTwo.pile.length} cards.`);
   };
 
   playHand() {
-    if(this.playerOneCards[0].points === this.playerTwoCards[0].points) {
-      console.log("tie");
-    } else if(this.playerOneCards[0].points > this.playerTwoCards[0].points) {
-      playerOne.winTrick([...this.playerOneCards, ...this.playerTwoCards]);
+    if(this.playerOneCards[0].points > this.playerTwoCards[0].points) {
+      this.trickWinner(playerOne);
+    } else if(this.playerOneCards[0].points < this.playerTwoCards[0].points) {
+      this.trickWinner(playerTwo);
     } else {
-      playerTwo.winTrick([...this.playerOneCards, ...this.playerTwoCards]);
+      console.log("tie");
     };
   };
 
