@@ -9,11 +9,11 @@ class Player {
   };
 
   layCard() {
-    this.pile.shift();
+    return this.pile.shift();
   };
 
   winTrick(cards) {
-    this.pile.push([...cards]);
+    this.pile.push(...cards);
   };
 };
 
@@ -71,16 +71,28 @@ class Deck {
 // console.log(`${this.name} adds ${cards.length} cards to their pile.`)
 
 class Hand {
-  constructor(playerOneCard, playerTwoCard) {
-    this.playerOneCards = [playerOneCard];
-    this.playerTwoCards = [playerTwoCard];
+  constructor() {
+    console.log(playerOne)
+    this.playerOneCards = [playerOne.layCard()];
+    this.playerTwoCards = [playerTwo.layCard()];
 
     this.listCards();
+    this.playHand();
   };
 
   listCards() {
-    console.log(`Player One lays the ${this.playerOneCards[0].name} of ${this.playerOneCards[0].suit}.`);
-    console.log(`Player Two lays the ${this.playerTwoCards[0].name} of ${this.playerTwoCards[0].suit}.`);
+    console.log(`${playerOne.name} lays the ${this.playerOneCards[0].name} of ${this.playerOneCards[0].suit}.`);
+    console.log(`${playerTwo.name} lays the ${this.playerTwoCards[0].name} of ${this.playerTwoCards[0].suit}.`);
+  };
+
+  playHand() {
+    if(this.playerOneCards[0].points === this.playerTwoCards[0].points) {
+      console.log("tie");
+    } else if(this.playerOneCards[0].points > this.playerTwoCards[0].points) {
+      playerOne.winTrick([...this.playerOneCards, ...this.playerTwoCards]);
+    } else {
+      playerTwo.winTrick([...this.playerOneCards, ...this.playerTwoCards]);
+    };
   };
 
 };
@@ -96,6 +108,8 @@ let playerTwo = new Player('Player Two')
 let deck = new Deck(cardList)
 
 deck.deal([playerOne, playerTwo])
+
+let hand = new Hand()
 
 
 //   - Loop through game:
