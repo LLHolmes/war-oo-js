@@ -13,12 +13,23 @@ class Card {
 class Deck {
   constructor(cardList) {
     this.cards = [];
+    this.shuffledCards = [];
     cardList.forEach(card => {
       this.cards.push(new Card(Object.keys(card)[0], Object.values(card)[0], 'clubs'));
       this.cards.push(new Card(Object.keys(card)[0], Object.values(card)[0], 'spades'));
       this.cards.push(new Card(Object.keys(card)[0], Object.values(card)[0], 'hearts'));
       this.cards.push(new Card(Object.keys(card)[0], Object.values(card)[0], 'diamonds'));
     });
+  };
+
+  shuffle() {
+    let d = this.cards.length;
+    let i;
+
+    while (d) {
+      i = Math.floor(Math.random() * d--);
+      this.shuffledCards.push(this.cards.splice(i, 1)[0]);
+    };
   };
 };
 
@@ -28,3 +39,4 @@ class Deck {
 
 // Game play:
 let deck = new Deck(cardList)
+deck.shuffle()
