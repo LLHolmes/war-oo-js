@@ -8,9 +8,13 @@ class Player {
     console.log(`${this.name} has entered the game.`)
   };
 
-  // CAN LAY A CARD
+  layCard() {
+    this.pile.shift();
+  };
 
-  // CAN ACCEPT A TRICK
+  winTrick(cards) {
+    this.pile.push([...cards]);
+  };
 };
 
 class Card {
