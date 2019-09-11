@@ -62,6 +62,7 @@ class Deck {
     };
     console.log("The cards have been shuffled and dealt.");
     console.log("Let's begin!");
+    console.log(`**********`);
   };
 };
 
@@ -76,7 +77,7 @@ class Hand {
   verifyCards() {
     console.log(`${playerOne.name} lays the ${this.playerOneCards[0].name} of ${this.playerOneCards[0].suit}.`);
     console.log(`${playerTwo.name} lays the ${this.playerTwoCards[0].name} of ${this.playerTwoCards[0].suit}.`);
-    console.log(`**********`);
+    console.log(`----------`);
     this.playHand();
   };
 
@@ -89,7 +90,6 @@ class Hand {
     player.winTrick([...this.playerOneCards, ...this.playerTwoCards]);
     console.log(`${player.name} wins the trick and adds ${this.playerOneCards.length * 2} cards to their pile of cards.`);
     console.log(`${playerOne.name} has ${playerOne.pile.length} cards in their pile while ${playerTwo.name} has ${playerTwo.pile.length} cards.`);
-    console.log(`**********`);
     console.log(`**********`);
   };
 
@@ -125,7 +125,7 @@ class Hand {
     this.addCards();
     console.log(`${playerOne.name} lays a card face down.`);
     console.log(`${playerTwo.name} lays a card face down.`);
-    console.log(`**********`);
+    console.log(`----------`);
   };
 
   continuePlay() {
@@ -147,11 +147,7 @@ let deck = new Deck(cardList);
 deck.deal([playerOne, playerTwo]);
 
 while(playerOne.pile.length && playerTwo.pile.length) {
-  if(playerOne.pile.length === 0) {
-    console.log(`${playerTwo.name} WINS THE GAME!`);
-  } else if(playerTwo.pile.length === 0) {
-    console.log(`${playerOne.name} WINS THE GAME!`);
-  } else {
-    let hand = new Hand();
-  };
+  let hand = new Hand();
 };
+
+playerOne.pile.length === 0 ? console.log(`${playerTwo.name.toUpperCase()} WINS THE GAME!`) : console.log(`${playerOne.name.toUpperCase()} WINS THE GAME!`);
