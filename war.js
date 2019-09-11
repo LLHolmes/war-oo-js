@@ -1,11 +1,13 @@
-const cardList = [{ '2': 2 }, { '3': 3 }, { '4': 4 }, { '5': 5 }, { '6': 6 }, { '7': 7 }, { '8': 8 }, { '9': 9 }, { '10': 10 }, { 'Jack': 11 }, { 'Queen': 12 }, { 'King': 13 }, { 'Ace': 14 }];
+// const cardList = [{ '2': 2 }, { '3': 3 }, { '4': 4 }, { '5': 5 }, { '6': 6 }, { '7': 7 }, { '8': 8 }, { '9': 9 }, { '10': 10 }, { 'Jack': 11 }, { 'Queen': 12 }, { 'King': 13 }, { 'Ace': 14 }];
+const cardList = [{ '2': 2 }, { '3': 3 }, { '4': 4 }, { '5': 5 }];
+
 
 class Player {
   constructor(name) {
     this.name = name;
     this.pile = [];
 
-    console.log(`${this.name} has entered the game.`)
+    console.log(`${this.name} has entered the game.`);
   };
 
   layCard() {
@@ -36,7 +38,7 @@ class Deck {
       this.cards.push(new Card(Object.keys(card)[0], Object.values(card)[0], 'diamonds'));
     });
 
-    console.log(`The cards are on the table.`)
+    console.log(`The cards are on the table.`);
   };
 
   shuffle() {
@@ -81,12 +83,14 @@ class Hand {
   addCards() {
     this.playerOneCards.unshift(playerOne.layCard());
     this.playerTwoCards.unshift(playerTwo.layCard());
-  }
+  };
 
   trickWinner(player) {
     player.winTrick([...this.playerOneCards, ...this.playerTwoCards]);
     console.log(`${player.name} wins the trick and adds ${this.playerOneCards.length * 2} cards to their pile of cards.`);
     console.log(`${playerOne.name} has ${playerOne.pile.length} cards in their pile while ${playerTwo.name} has ${playerTwo.pile.length} cards.`);
+    console.log(`**********`);
+    console.log(`**********`);
   };
 
   playHand() {
@@ -94,8 +98,26 @@ class Hand {
       this.trickWinner(playerOne);
     } else if(this.playerOneCards[0].points < this.playerTwoCards[0].points) {
       this.trickWinner(playerTwo);
+    // In the event of a tie:
     } else {
-      this.playTie();
+      // Check both players have enough cards to play full tie. If so, do.
+      if(playerOne.pile.length >= 2 && playerTwo.pile.length >= 2){
+        this.playTie();
+        this.continuePlay();
+      // If either only has one card left, lay facedown card and opponent wins.
+      } else if((playerOne.pile.length === 1 || playerTwo.pile.length === 1)) {
+        this.playTie();
+        if(playerOne.pile.length === 0)  {
+          console.log(`${playerOne.name} is out of cards.`);
+          this.trickWinner(playerTwo);
+        } else {
+          console.log(`${playerTwo.name} is out of cards.`);
+          this.trickWinner(playerOne);
+        };
+      // Otherwise, player with no cards remaining loses hand.
+      } else {
+        playerOne.pile.length === 0 ? this.trickWinner(playerTwo) : this.trickWinner(playerOne);
+      };
     };
   };
 
@@ -104,10 +126,12 @@ class Hand {
     console.log(`${playerOne.name} lays a card face down.`);
     console.log(`${playerTwo.name} lays a card face down.`);
     console.log(`**********`);
+  };
+
+  continuePlay() {
     this.addCards();
     this.verifyCards();
-  }
-
+  };
 };
 
 
@@ -122,8 +146,15 @@ let deck = new Deck(cardList)
 
 deck.deal([playerOne, playerTwo])
 
-let hand = new Hand()
-
+while(playerOne.pile.length && playerTwo.pile.length) {
+  if(playerOne.pile.length === 0) {
+    console.log(`${playerTwo.name} WINS THE GAME!`)
+  } else if(playerTwo.pile.length === 0) {
+    console.log(`${playerOne.name} WINS THE GAME!`)
+  } else {
+    let hand = new Hand();
+  };
+};
 
 //   - Loop through game:
 //     - verify both Players have Cards
