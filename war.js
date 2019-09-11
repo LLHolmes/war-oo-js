@@ -63,33 +63,24 @@ class Deck {
   };
 };
 
-// #### Hands Class
-//   - Can verify points of Cards
-//   - Can play hand - verify points of Cards
-//   - Can play tie - accept facedown Cards, then accept cards and verify points again upon a tie
-//   - Can give cards to player when trick is won
-// console.log(`${this.name} adds ${cards.length} cards to their pile.`)
-
 class Hand {
   constructor() {
     this.playerOneCards = [playerOne.layCard()];
     this.playerTwoCards = [playerTwo.layCard()];
 
-    this.listCards();
-    this.playHand();
+    this.verifyCards();
   };
 
-  listCards() {
+  verifyCards() {
     console.log(`${playerOne.name} lays the ${this.playerOneCards[0].name} of ${this.playerOneCards[0].suit}.`);
     console.log(`${playerTwo.name} lays the ${this.playerTwoCards[0].name} of ${this.playerTwoCards[0].suit}.`);
     console.log(`**********`);
+    this.playHand();
   };
 
   addCards() {
     this.playerOneCards.unshift(playerOne.layCard());
     this.playerTwoCards.unshift(playerTwo.layCard());
-    console.log(this.playerOneCards.length)
-    console.log(this.playerTwoCards.length)
   }
 
   trickWinner(player) {
@@ -110,11 +101,11 @@ class Hand {
 
   playTie() {
     this.addCards();
-    console.log(`${playerOne.name} lays a card face down.`)
-    console.log(`${playerTwo.name} lays a card face down.`)
+    console.log(`${playerOne.name} lays a card face down.`);
+    console.log(`${playerTwo.name} lays a card face down.`);
     console.log(`**********`);
     this.addCards();
-    this.listCards();
+    this.verifyCards();
   }
 
 };
