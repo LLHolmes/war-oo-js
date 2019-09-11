@@ -64,12 +64,26 @@ class Deck {
 };
 
 // #### Hands Class
-//   - Has PlayerOneCards - Array of Cards
-//   - Has PlayerTwoCards - Array of Cards
 //   - Can verify points of Cards
 //   - Can play hand - verify points of Cards
 //   - Can play tie - accept facedown Cards, then accept cards and verify points again upon a tie
 //   - Can give cards to player when trick is won
+// console.log(`${this.name} adds ${cards.length} cards to their pile.`)
+
+class Hand {
+  constructor(playerOneCard, playerTwoCard) {
+    this.playerOneCards = [playerOneCard];
+    this.playerTwoCards = [playerTwoCard];
+
+    this.listCards();
+  };
+
+  listCards() {
+    console.log(`Player One lays the ${this.playerOneCards[0].name} of ${this.playerOneCards[0].suit}.`);
+    console.log(`Player Two lays the ${this.playerTwoCards[0].name} of ${this.playerTwoCards[0].suit}.`);
+  };
+
+};
 
 
 
