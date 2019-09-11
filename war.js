@@ -1,11 +1,11 @@
-console.log("The Game Of WAR!")
-
 const cardList = [{ '2': 2 }, { '3': 3 }, { '4': 4 }, { '5': 5 }, { '6': 6 }, { '7': 7 }, { '8': 8 }, { '9': 9 }, { '10': 10 }, { 'Jack': 11 }, { 'Queen': 12 }, { 'King': 13 }, { 'Ace': 14 }];
 
 class Player {
   constructor(name) {
     this.name = name;
     this.pile = [];
+
+    console.log(`${this.name} has entered the game.`)
   };
 
   // CAN LAY A CARD
@@ -31,6 +31,8 @@ class Deck {
       this.cards.push(new Card(Object.keys(card)[0], Object.values(card)[0], 'hearts'));
       this.cards.push(new Card(Object.keys(card)[0], Object.values(card)[0], 'diamonds'));
     });
+
+    console.log(`The cards are on the table.`)
   };
 
   shuffle() {
@@ -59,6 +61,7 @@ class Deck {
 
 
 // Game play:
+console.log("The Game Of WAR!")
 let playerOne = new Player('Player One')
 let playerTwo = new Player('Player Two')
 let deck = new Deck(cardList)
