@@ -82,11 +82,18 @@ class Hand {
   listCards() {
     console.log(`${playerOne.name} lays the ${this.playerOneCards[0].name} of ${this.playerOneCards[0].suit}.`);
     console.log(`${playerTwo.name} lays the ${this.playerTwoCards[0].name} of ${this.playerTwoCards[0].suit}.`);
-    console.log(`**********`)
+    console.log(`**********`);
   };
 
+  addCards() {
+    this.playerOneCards.unshift(playerOne.layCard());
+    this.playerTwoCards.unshift(playerTwo.layCard());
+    console.log(this.playerOneCards.length)
+    console.log(this.playerTwoCards.length)
+  }
+
   trickWinner(player) {
-    player.winTrick([...this.playerOneCards, ...this.playerTwoCards])
+    player.winTrick([...this.playerOneCards, ...this.playerTwoCards]);
     console.log(`${player.name} wins the trick and adds ${this.playerOneCards.length * 2} cards to their pile of cards.`);
     console.log(`${playerOne.name} has ${playerOne.pile.length} cards in their pile while ${playerTwo.name} has ${playerTwo.pile.length} cards.`);
   };
@@ -97,9 +104,18 @@ class Hand {
     } else if(this.playerOneCards[0].points < this.playerTwoCards[0].points) {
       this.trickWinner(playerTwo);
     } else {
-      console.log("tie");
+      this.playTie();
     };
   };
+
+  playTie() {
+    this.addCards();
+    console.log(`${playerOne.name} lays a card face down.`)
+    console.log(`${playerTwo.name} lays a card face down.`)
+    console.log(`**********`);
+    this.addCards();
+    this.listCards();
+  }
 
 };
 
