@@ -45,7 +45,18 @@ class Deck {
     };
   };
 
-  // CAN DEAL CARDS
+  deal(players) {
+    this.shuffle();
+    let d = this.shuffledCards.length;
+    while(d) {
+      players[0].pile.push(this.shuffledCards.shift());
+      --d;
+      players[1].pile.push(this.shuffledCards.shift());
+      --d;
+    };
+    console.log("The cards have been shuffled and dealt.");
+    console.log("Let's begin!");
+  };
 };
 
 // #### Hands Class
@@ -66,10 +77,9 @@ let playerOne = new Player('Player One')
 let playerTwo = new Player('Player Two')
 let deck = new Deck(cardList)
 
-deck.shuffle()
+deck.deal([playerOne, playerTwo])
 
 
-//   - Deal Deck
 //   - Loop through game:
 //     - verify both Players have Cards
 //     - start a Hand ???
