@@ -1,5 +1,6 @@
 // const cardList = [{ '2': 2 }, { '3': 3 }, { '4': 4 }, { '5': 5 }, { '6': 6 }, { '7': 7 }, { '8': 8 }, { '9': 9 }, { '10': 10 }, { 'Jack': 11 }, { 'Queen': 12 }, { 'King': 13 }, { 'Ace': 14 }];
 const cardList = [{ '2': 2 }, { '3': 3 }, { '4': 4 }, { '5': 5 }];
+const suitList = ['clubs', 'spades', 'hearts', 'diamonds'];
 
 
 class Player {
@@ -32,10 +33,9 @@ class Deck {
     this.cards = [];
     this.shuffledCards = [];
     cardList.forEach(card => {
-      this.cards.push(new Card(Object.keys(card)[0], Object.values(card)[0], 'clubs'));
-      this.cards.push(new Card(Object.keys(card)[0], Object.values(card)[0], 'spades'));
-      this.cards.push(new Card(Object.keys(card)[0], Object.values(card)[0], 'hearts'));
-      this.cards.push(new Card(Object.keys(card)[0], Object.values(card)[0], 'diamonds'));
+      suitList.forEach(suit => {
+        this.cards.push(new Card(Object.keys(card)[0], Object.values(card)[0], suit));
+      });
     });
 
     console.log(`The cards are on the table.`);
