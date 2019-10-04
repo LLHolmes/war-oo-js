@@ -64,13 +64,36 @@ const checkPiles = (players) => {
   return true
 };
 
+const checkPilesTie = (players) => {
+  for (let i = 0; i < players.length; i++) {
+    if (players[i].pile.length < 2) {
+      return false;
+    };
+  };
+  return true
+};
+
+const announceEmptyPile = (players) => {
+  for (let i = 0; i < players.length; i++) {
+    if (players[i].pile.length === 0) {
+      console.log(`${players[i].name} has run out of cards.`)
+    };
+  };
+};
+
 const layCards = (players, cardsPlayed) => {
-  // let cardsPlayed = [];
   if (cardsPlayed[0]) {
     for(let i = 0; i < players.length; i++) {
-      cardsPlayed[i].cards.unshift(players[i].pile.shift());
-      cardsPlayed[i].cards.unshift(players[i].pile.shift());
-      console.log(`${players[i].name} lays the ${cardsPlayed[i].cards[0].name} of ${cardsPlayed[i].cards[0].suit}.`)
+      if (checkPilesTie(players)) {
+        cardsPlayed[i].cards.unshift(players[i].pile.shift());
+        cardsPlayed[i].cards.unshift(players[i].pile.shift());
+        console.log(`${players[i].name} lays the ${cardsPlayed[i].cards[0].name} of ${cardsPlayed[i].cards[0].suit}.`)
+      } else if (checkPiles(players)) {
+        cardsPlayed[i].cards.unshift(players[i].pile.shift());
+        announceEmptyPile(players)
+      } else {
+        announceEmptyPile(players)
+      };
     };
   } else {
     for(let i = 0; i < players.length; i++) {
