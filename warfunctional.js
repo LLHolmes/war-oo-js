@@ -65,7 +65,11 @@ const checkPiles = (players) => {
 };
 
 const layCards = (players) => {
-
+  let cardsPlayed = [];
+  for(let i = 0; i < players.length; i++) {
+    cardsPlayed.push({ name: players[i].name, cards: [players[i].pile.shift()] });
+  };
+  return cardsPlayed;
 };
 
 const findWinner = () => {
@@ -84,9 +88,15 @@ const announceWinner = () => {
 console.log("The Game Of WAR!");
 let deck = new Deck(cardList, suitList);
 let shuffledDeck = shuffle(deck.cards);
-let players = dealToPlayers(2, shuffledDeck); // [{ player: 1, pile: [] }...]  // Array of objects for each player with an array of Cards for pile
+let players = dealToPlayers(2, shuffledDeck); // [{ name: 1, pile: [] }...]  // Array of objects for each player with an array of Cards for pile
 
-checkPiles(players);
+// while(checkPiles(players)) {
+  console.log(players[0].pile.length)
+  let layedCards = layCards(players);
+  console.log(players[0].pile.length)
+  console.log(layedCards)
+
+// };
 
 
 // If both players have cards in their pile:            checkPiles
