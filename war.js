@@ -70,7 +70,7 @@ class Hand {
   constructor() {
     this.playerOneCards = [playerOne.layCard()];
     this.playerTwoCards = [playerTwo.layCard()];
-
+    this.currentPlayers = []
     this.verifyCards();
   };
 
