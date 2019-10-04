@@ -34,11 +34,11 @@ const shuffle = (cards) => {
 };
 
 const dealToPlayers = (numberOfPlayers, cards) => {
-  let players = []
+  let players = [];
   for (let x = 1; x <= numberOfPlayers; x++) {
     players.push({name: `Player ${x}`, pile: []});
     console.log(`Player ${x} has entered the game.`);
-  }
+  };
 
   let d = cards.length;
   while(d) {
@@ -53,11 +53,49 @@ const dealToPlayers = (numberOfPlayers, cards) => {
   console.log(`**********`);
 
   return players;
-}
+};
 
+const checkPiles = (players) => {
+  for (let i = 0; i < players.length; i++) {
+    if (players[i].pile.length === 0) {
+      return false;
+    };
+  };
+  return true
+};
+
+const layCards = (players) => {
+
+};
+
+const findWinner = () => {
+
+};
+
+const winnerAddsCards = (players) => {
+
+};
+
+const announceWinner = () => {
+
+};
 
 // Game play:
 console.log("The Game Of WAR!");
 let deck = new Deck(cardList, suitList);
 let shuffledDeck = shuffle(deck.cards);
-let players = dealToPlayers(2, shuffledDeck); // [{ player: 1, pile: [] }...]  // Array of objects for each player
+let players = dealToPlayers(2, shuffledDeck); // [{ player: 1, pile: [] }...]  // Array of objects for each player with an array of Cards for pile
+
+checkPiles(players);
+
+
+// If both players have cards in their pile:            checkPiles
+//   Players lay card.                                  layCards
+//   If one card is higher, that player wins hand.      findWinner
+//   If not:
+//     players lay a blind card.                        layCards
+//     players lay another card.                        layCards
+//     if one card is higher, that player wins hand.    findWinner
+//     if not, repeat...
+//   Winning player collects cards.                     winnerAddsCards
+// If not, player with cards in pile wins game.         announceWinner
