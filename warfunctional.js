@@ -64,39 +64,126 @@ const checkPiles = (players) => {
   return true
 };
 
-const layCards = (players) => {
-  let cardsPlayed = [];
-  for(let i = 0; i < players.length; i++) {
-    cardsPlayed.push({ name: players[i].name, cards: [players[i].pile.shift()] });
+const layCards = (players, cardsPlayed) => {
+  // let cardsPlayed = [];
+  if (cardsPlayed[0]) {
+    for(let i = 0; i < players.length; i++) {
+      cardsPlayed[i].cards.unshift(players[i].pile.shift());
+      cardsPlayed[i].cards.unshift(players[i].pile.shift());
+      console.log(`${players[i].name} lays the ${cardsPlayed[i].cards[0].name} of ${cardsPlayed[i].cards[0].suit}.`)
+    };
+  } else {
+    for(let i = 0; i < players.length; i++) {
+      cardsPlayed.push({ name: players[i].name, cards: [players[i].pile.shift()] });
+      console.log(`${players[i].name} lays the ${cardsPlayed[i].cards[0].name} of ${cardsPlayed[i].cards[0].suit}.`)
+    };
   };
   return cardsPlayed;
 };
 
-const findWinner = () => {
-
+const playTie = (players, cardsPlayed) => {
+  for(let i = 0; i < players.length; i++) {
+    cardsPlayed[i].cards.unshift(players[i].pile.shift());
+  };
+  return cardsPlayed;
 };
 
-const winnerAddsCards = (players) => {
+const winOrTie = (layedCards) => {
+  let cards = {};
+  for(let i = 0; i < layedCards.length; i++) {
+    if (cards[layedCards[i].cards[0].points]) {
+      return false;
+    } else {
+      cards[layedCards[i].cards[0].points] = 1;
+    };
+  };
+  return true
 
+  // Needs to be adjusted for more than two players:
+  // Started tinkering but cards[highest] = undefined
+  //   let cards = {};
+  //   for(let i = 0; i < layedCards.length; i++) {
+  //     if (cards[layedCards[i].cards[0].points]) {
+  //       cards[layedCards[i].cards[0].points] += 1
+  //     } else {
+  //       cards[layedCards[i].cards[0].points] = 1;
+  //     };
+  //   };
+  // console.log(`winOrTie`)
+  //   let orderedCards = Object.keys(cards).sort()
+  //   // console.log(orderedCards[0])
+  //   console.log(orderedCards)
+  //   let highest = orderedCards.pop
+  //   console.log(cards[highest])
+  //   console.log({two: 1, five: 1})
+  //   if (cards[highest] === 1){
+  //     console.log(`1`)
+  //   } else {
+  //     console.log(`greater than 1`)
+  //   }
+  //   console.log(cards)
+  //   return true
 };
 
-const announceWinner = () => {
+const winnerAddsCards = (players, layedCards) => {
+  let winner = players.find(player => player.name === layedCards[0].name);
+  for(let i = 0; i < layedCards.length; i++) {
+    winner.pile.push(...layedCards[i].cards);
+  };
+};
 
+const announceHandWinner = (players, layedCards) => {
+  console.log(`${layedCards[0].name} wins the hand.`);
+  for(let i = 0; i < players.length; i++) {
+    console.log(`${players[i].name} has ${players[i].pile.length} cards in his pile.`);
+  };
+  console.log(`**********`);
+};
+
+const filterPlayers = (players) => {
+  // players.filter(player => (player if player.pile.length > 0))
+  return players
+}
+
+const announceGameWinner = (players) => {
+  // console.log(`${layedCards[0].name} wins the hand.`);
+  for(let i = 0; i < players.length; i++) {
+    console.log(`${players[i].name} has ${players[i].pile.length} cards in his pile.`);
+  };
+  console.log(`**********`);
 };
 
 // Game play:
 console.log("The Game Of WAR!");
 let deck = new Deck(cardList, suitList);
 let shuffledDeck = shuffle(deck.cards);
-let players = dealToPlayers(2, shuffledDeck); // [{ name: 1, pile: [] }...]  // Array of objects for each player with an array of Cards for pile
-
+let players = dealToPlayers(2, shuffledDeck); // [{ name: Player 1, pile: [] }...]  // Array of objects for each player with an array of Cards for pile
+      // Should I change to [{ Player 1: [] }...]
+let layedCards = [];
 // while(checkPiles(players)) {
-  console.log(players[0].pile.length)
-  let layedCards = layCards(players);
-  console.log(players[0].pile.length)
-  console.log(layedCards)
-
+  layedCards = layCards(players, layedCards);
+  console.log(layedCards[0].cards.length)
+  if (winOrTie(layedCards)) {
+    layedCards.sort((a, b) => b.cards[0].points > a.cards[0].points ? 1 : -1)
+    winnerAddsCards(players, layedCards)
+    announceHandWinner(players, layedCards)
+  } else {
+    while(!winOrTie(layedCards)) {
+      console.log(`Tie!`)
+      // if (checkPiles(players)) {
+        layedCards = layCards(players, layedCards);
+        console.log(layedCards[0].cards.length)
+      // } else {
+      //   players.filter
+      // };
+      // console.log(layedCards)
+    };
+  };
 // };
+console.log(`**********`);
+
+console.log(`End of game`)
+console.log(players)
 
 
 // If both players have cards in their pile:            checkPiles
