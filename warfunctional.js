@@ -64,13 +64,14 @@ const checkPiles = (players) => {
   return true
 };
 
-const checkPilesTie = (players) => {
+const countPilesTie = (players) => {
+  let lowestCount = 52;
   for (let i = 0; i < players.length; i++) {
-    if (players[i].pile.length < 2) {
-      return false;
+    if (players[i].pile.length < lowestCount) {
+      lowestCount = players[i].pile.length
     };
   };
-  return true
+  return lowestCount
 };
 
 const announceEmptyPile = (players) => {
@@ -81,32 +82,35 @@ const announceEmptyPile = (players) => {
   };
 };
 
-const layCards = (players, cardsPlayed) => {
-  if (cardsPlayed[0]) {
-    for(let i = 0; i < players.length; i++) {
-      if (checkPilesTie(players)) {
-        cardsPlayed[i].cards.unshift(players[i].pile.shift());
-        cardsPlayed[i].cards.unshift(players[i].pile.shift());
-        console.log(`${players[i].name} lays the ${cardsPlayed[i].cards[0].name} of ${cardsPlayed[i].cards[0].suit}.`)
-      } else if (checkPiles(players)) {
-        cardsPlayed[i].cards.unshift(players[i].pile.shift());
-        announceEmptyPile(players)
-      } else {
-        announceEmptyPile(players)
-      };
-    };
-  } else {
-    for(let i = 0; i < players.length; i++) {
-      cardsPlayed.push({ name: players[i].name, cards: [players[i].pile.shift()] });
-      console.log(`${players[i].name} lays the ${cardsPlayed[i].cards[0].name} of ${cardsPlayed[i].cards[0].suit}.`)
-    };
+const startHand = (players) => {
+  let cardsPlayed = [];
+  for(let i = 0; i < players.length; i++) {
+    cardsPlayed.push({ name: players[i].name, cards: [players[i].pile.shift()] });
+    console.log(`${players[i].name} lays the ${cardsPlayed[i].cards[0].name} of ${cardsPlayed[i].cards[0].suit}.`);
   };
   return cardsPlayed;
 };
 
 const playTie = (players, cardsPlayed) => {
-  for(let i = 0; i < players.length; i++) {
-    cardsPlayed[i].cards.unshift(players[i].pile.shift());
+  // Needs to be adjusted for more than two players
+  while(cardsPlayed[0].cards[0].points === cardsPlayed[1].cards[0].points) {
+    if (countPilesTie(players) > 2) {
+      for(let i = 0; i < players.length; i++) {
+        cardsPlayed[i].cards.unshift(players[i].pile.shift());
+        cardsPlayed[i].cards.unshift(players[i].pile.shift());
+        console.log(`${players[i].name} lays a blind card and the ${cardsPlayed[i].cards[0].name} of ${cardsPlayed[i].cards[0].suit}.`);
+      };
+    } else if (countPilesTie(players) === 1) {
+      for(let i = 0; i < players.length; i++) {
+        cardsPlayed[i].cards.unshift(players[i].pile.shift());
+        console.log(`${players[i].name} lays a blind card and has ${players[i].pile.length} cards in his pile.`);
+        announceEmptyPile(players)
+      };
+      break;
+    } else if (countPilesTie(players) === 0) {
+      announceEmptyPile(players)
+      break;
+    };
   };
   return cardsPlayed;
 };
@@ -122,30 +126,7 @@ const winOrTie = (layedCards) => {
   };
   return true
 
-  // Needs to be adjusted for more than two players:
-  // Started tinkering but cards[highest] = undefined
-  //   let cards = {};
-  //   for(let i = 0; i < layedCards.length; i++) {
-  //     if (cards[layedCards[i].cards[0].points]) {
-  //       cards[layedCards[i].cards[0].points] += 1
-  //     } else {
-  //       cards[layedCards[i].cards[0].points] = 1;
-  //     };
-  //   };
-  // console.log(`winOrTie`)
-  //   let orderedCards = Object.keys(cards).sort()
-  //   // console.log(orderedCards[0])
-  //   console.log(orderedCards)
-  //   let highest = orderedCards.pop
-  //   console.log(cards[highest])
-  //   console.log({two: 1, five: 1})
-  //   if (cards[highest] === 1){
-  //     console.log(`1`)
-  //   } else {
-  //     console.log(`greater than 1`)
-  //   }
-  //   console.log(cards)
-  //   return true
+  // Needs to be adjusted for more than two players
 };
 
 const winnerAddsCards = (players, layedCards) => {
@@ -163,59 +144,27 @@ const announceHandWinner = (players, layedCards) => {
   console.log(`**********`);
 };
 
-const filterPlayers = (players) => {
-  // players.filter(player => (player if player.pile.length > 0))
-  return players
-}
-
-const announceGameWinner = (players) => {
-  // console.log(`${layedCards[0].name} wins the hand.`);
-  for(let i = 0; i < players.length; i++) {
-    console.log(`${players[i].name} has ${players[i].pile.length} cards in his pile.`);
-  };
-  console.log(`**********`);
-};
-
 // Game play:
 console.log("The Game Of WAR!");
 let deck = new Deck(cardList, suitList);
 let shuffledDeck = shuffle(deck.cards);
-let players = dealToPlayers(2, shuffledDeck); // [{ name: Player 1, pile: [] }...]  // Array of objects for each player with an array of Cards for pile
-      // Should I change to [{ Player 1: [] }...]
-let layedCards = [];
-// while(checkPiles(players)) {
-  layedCards = layCards(players, layedCards);
-  console.log(layedCards[0].cards.length)
+let players = dealToPlayers(2, shuffledDeck);
+
+while(checkPiles(players)) {
+  let layedCards = startHand(players);
   if (winOrTie(layedCards)) {
     layedCards.sort((a, b) => b.cards[0].points > a.cards[0].points ? 1 : -1)
     winnerAddsCards(players, layedCards)
     announceHandWinner(players, layedCards)
   } else {
-    while(!winOrTie(layedCards)) {
-      console.log(`Tie!`)
-      // if (checkPiles(players)) {
-        layedCards = layCards(players, layedCards);
-        console.log(layedCards[0].cards.length)
-      // } else {
-      //   players.filter
-      // };
-      // console.log(layedCards)
-    };
+    console.log(`Tie!`)
+    layedCards = playTie(players, layedCards);
+    winnerAddsCards(players, layedCards)
+    announceHandWinner(players, layedCards)
   };
-// };
+};
+
 console.log(`**********`);
-
+let winner = players.find(player => player.pile.length > 0)
 console.log(`End of game`)
-console.log(players)
-
-
-// If both players have cards in their pile:            checkPiles
-//   Players lay card.                                  layCards
-//   If one card is higher, that player wins hand.      findWinner
-//   If not:
-//     players lay a blind card.                        layCards
-//     players lay another card.                        layCards
-//     if one card is higher, that player wins hand.    findWinner
-//     if not, repeat...
-//   Winning player collects cards.                     winnerAddsCards
-// If not, player with cards in pile wins game.         announceWinner
+console.log(`${winner.name.toUpperCase()} WINS!`)
